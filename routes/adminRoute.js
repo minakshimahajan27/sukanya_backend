@@ -3,13 +3,9 @@ import express from "express";
 import {loginAdmin,} from "../controllers/adminController.js"
 import { addSnack, getAllSnacks,getSingleSnack,updateSnack,deleteSnack} from "../controllers/snackproductController.js";
 import {addGarmentProduct,getAllGarmentProducts,getSingleGarmentProduct,updateGarmentProduct,deleteGarmentProduct} from "../controllers/garmentproductController.js";
-import {
-  addCustomer,
-  getAllCustomers,
-  getSingleCustomer,
-  updateCustomer,
-  deleteCustomer
-} from "../controllers/customerController.js";
+import {addCustomer, getAllCustomers,getSingleCustomer,updateCustomer,deleteCustomer} from "../controllers/customerController.js";
+import {addSnackBlog, getAllSnackBlogs, getSnackBlogById,updateSnackBlog,deleteSnackBlog,} from"../controllers/snackBlogController.js";
+
 import authMiddleware from "../middleware/authMiddleware.js";
 import upload from "../middleware/uploadMiddleware.js";
 const router = express.Router();
@@ -46,5 +42,12 @@ router.get("/customer/all", authMiddleware, getAllCustomers);
 router.get("/customer/:id", authMiddleware, getSingleCustomer);
 router.put("/customer/update/:id", authMiddleware, updateCustomer);
 router.delete("/customer/delete/:id", authMiddleware, deleteCustomer);
+
+//SNACKBLOG APIS
+router.post("snackblog/add", upload.single("image"), addSnackBlog);
+router.get("snackblog/all", getAllSnackBlogs);
+router.get("snackblog/:id", getSnackBlogById);
+router.put("snackblog/update/:id", upload.single("image"), updateSnackBlog);
+router.delete("snackblog/delete/:id", deleteSnackBlog);
 
 export default router;
