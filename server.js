@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import connectDB from './config/connectDB.js';
 import adminRoute from "./routes/adminRoute.js";
-
+import path from "path";
 dotenv.config();
 
 const app = express();
@@ -16,7 +16,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Sukanya Website Backend Running!');
 });
-
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 app.use("/api/admin", adminRoute);
 const PORT = process.env.PORT || 5000;
 
