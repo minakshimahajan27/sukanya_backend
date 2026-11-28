@@ -1,20 +1,47 @@
-
-
 import Snack from "../models/snackproductModel.js";
 
 // ADD SNACK
 export const addSnack = async (req, res) => {
   try {
-    const snack = await Snack.create(req.body);
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
+
+    const {
+      snackName,
+      category,
+      weight,
+      price,
+      description
+    } = req.body;
+
+    if (!snackName || !category || !weight || !price || !description) {
+      return res.status(400).json({
+        success: false,
+        message: "All required fields are required"
+      });
+    }
+
+    const snack = await Snack.create({
+      snackName,
+      category,
+      weight,
+      price: Number(price),
+      description,
+
+      // Uploaded image ko images array mein save karna
+      images: req.file ? [`/uploads/${req.file.filename}`] : []
+    });
 
     res.status(201).json({
       success: true,
-      message: "Snack added successfully",
-      snack
+      message: "Snack Product Added Successfully!",
+      data: snack
     });
 
   } catch (error) {
-    res.status(400).json({
+    console.log("Add Snack Error:", error);
+
+    res.status(500).json({
       success: false,
       message: error.message
     });
